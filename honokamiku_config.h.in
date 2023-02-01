@@ -1,0 +1,10 @@
+/*!
+ * \file honokamiku_config.h
+ * Version
+ */
+
+#define HONOKAMIKU_VERSION @LIBHONOKA_VERSION@
+#define HONOKAMIKU_VERSION_STRING "@LIBHONOKA_VERSION_STRING@"
+
+/* Disable version 3 strict header checking */
+#cmakedefine HONOKAMIKU_V3_NOHDR_CHECK
