@@ -16,10 +16,14 @@ if(MSVC)
 endif()
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/honokamiku_config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/honokamiku_config.h")
-include_directories("${PROJECT_BINARY_DIR}")
 add_library(honoka SHARED md5.c honokamiku_decrypter.c)
 add_library(honoka_static STATIC md5.c honokamiku_decrypter.c)
 target_compile_definitions(honoka PUBLIC HONOKAMIKU_SHARED)
+
+target_include_directories(honoka PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_include_directories(honoka PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(honoka_static PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_include_directories(honoka_static PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 install(TARGETS honoka DESTINATION lib)
 install(TARGETS honoka_static DESTINATION lib)
