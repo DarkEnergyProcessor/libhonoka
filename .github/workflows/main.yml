@@ -1,0 +1,53 @@
+name: build
+on: [push, pull_request]
+
+jobs:
+  linux-os:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Configure
+      run: cmake -Bbuild -S. --install-prefix $PWD/installdir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_RPATH=\$ORIGIN/../lib
+    - name: Build
+      run: cmake --build build --target install -j
+    - name: Quick Test
+      run: |
+        set -e
+        mv installdir a
+        a/bin/honoka2 -?
+        a/bin/honoka2 -v
+    - name: Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: libhonoka-linux
+        path: a/
+  windows-os:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [Win32, x64, ARM64]
+    defaults:
+      run:
+        shell: cmd
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Configure
+      env:
+        PLATFORM: ${{ matrix.platform }}
+      run: cmake -Bbuild -S. -T v142 -A %PLATFORM% --install-prefix %CD%\installdir
+    - name: Build
+      shell: cmd
+      run: cmake --build build --config Release --target install -j2
+    - name: Quick Test
+      run: |
+        installdir\bin\honoka2 -?
+        if NOT %ERRORLEVEL% EQU 0 exit /b 1
+        installdir\bin\honoka2 -v
+        if NOT %ERRORLEVEL% EQU 0 exit /b 1
+    - name: Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: libhonoka-windows-${{ matrix.platform }}
+        path: install
