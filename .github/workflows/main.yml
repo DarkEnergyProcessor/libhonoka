@@ -39,8 +39,9 @@ jobs:
       run: cmake -Bbuild -S. -T v142 -A %PLATFORM% --install-prefix %CD%\installdir
     - name: Build
       shell: cmd
-      run: cmake --build build --config Release --target install -j2
+      run: cmake --build build --config Release --target install -j
     - name: Quick Test
+      if: matrix.platform != 'ARM64'
       run: |
         installdir\bin\honoka2 -?
         if NOT %ERRORLEVEL% EQU 0 exit /b 1
@@ -50,4 +51,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: libhonoka-windows-${{ matrix.platform }}
-        path: install
+        path: installdir/

@@ -25,7 +25,7 @@ target_include_directories(honoka PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(honoka_static PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(honoka_static PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
-install(TARGETS honoka DESTINATION lib)
+install(TARGETS honoka DESTINATION lib RUNTIME DESTINATION bin)
 install(TARGETS honoka_static DESTINATION lib)
 install(FILES honokamiku_decrypter.h DESTINATION include)
 
