@@ -1,2 +1,3 @@
-build
+/.vscode
+/build
 honokamiku_config.h

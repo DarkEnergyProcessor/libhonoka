@@ -28,7 +28,7 @@
 		(dctx)->xor_key = ((b >> 23) & 255) |((b >> 7) & 65280); \
 	}
 
-const char *hm_basename(const char *name)
+const char *libhonoka__basename(const char *name)
 {
 	const char *pos = name + strlen(name);
 	for(; *pos != '/' && *pos != '\\' && pos != name; pos--) {}
@@ -96,7 +96,7 @@ int honokamiku_dinit(
 	memset(dctx, 0, sizeof(honokamiku_context));
 	
 	/* Get basename */
-	filename = hm_basename(filename);
+	filename = libhonoka__basename(filename);
 	filename_size = strlen(filename);
 	
 	MD5Init(&mctx);
@@ -222,7 +222,7 @@ int honokamiku_einit(
 	header = (char*)header_out;
 	
 	/* Get basename */
-	filename = hm_basename(filename);
+	filename = libhonoka__basename(filename);
 	filename_size = strlen(filename);
 	
 	/* Compute MD5 */
@@ -828,7 +828,7 @@ int honokamiku_decrypt_final_init(
 	if (dmode_file == honokamiku_decrypt_version3)
 	{
 		/* Calculate name sum */
-		const char *basename = hm_basename(filename);
+		const char *basename = libhonoka__basename(filename);
 		unsigned int file_name_sum = (unsigned char)header[7] | (unsigned char)header[6] << 8;
 		unsigned int name_sum_idx = file_name_sum & 63;
 
@@ -873,7 +873,7 @@ int honokamiku_decrypt_final_init(
 		const lcg_keys *keys;
 		char select_lcg = 0;
 		size_t i = 0;
-		const char *basename = hm_basename(filename);
+		const char *basename = libhonoka__basename(filename);
 
 		for(; *basename; i++, select_lcg += *basename++);
 
@@ -896,7 +896,7 @@ int honokamiku_decrypt_final_init(
 		char select_lcg = 0;
 		char select_lcg2 = 0;
 		size_t i = 0;
-		const char *basename = hm_basename(filename);
+		const char *basename = libhonoka__basename(filename);
 		
 		for(;
 			*basename;

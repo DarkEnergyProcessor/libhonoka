@@ -37,7 +37,7 @@
 /* forward declaration */
 static void Transform ();
 
-static unsigned char PADDING[64] = {
+static unsigned char MD5_PADDING[64] = {
   0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -60,22 +60,22 @@ static unsigned char PADDING[64] = {
 /* FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4 */
 /* Rotation is separate from addition to prevent recomputation */
 #define FF(a, b, c, d, x, s, ac) \
-  {(a) += F ((b), (c), (d)) + (x) + (UINT4)(ac); \
+  {(a) += MD5_F ((b), (c), (d)) + (x) + (UINT4)(ac); \
    (a) = ROTATE_LEFT ((a), (s)); \
    (a) += (b); \
   }
 #define GG(a, b, c, d, x, s, ac) \
-  {(a) += G ((b), (c), (d)) + (x) + (UINT4)(ac); \
+  {(a) += MD5_G ((b), (c), (d)) + (x) + (UINT4)(ac); \
    (a) = ROTATE_LEFT ((a), (s)); \
    (a) += (b); \
   }
 #define HH(a, b, c, d, x, s, ac) \
-  {(a) += H ((b), (c), (d)) + (x) + (UINT4)(ac); \
+  {(a) += MD5_H ((b), (c), (d)) + (x) + (UINT4)(ac); \
    (a) = ROTATE_LEFT ((a), (s)); \
    (a) += (b); \
   }
 #define II(a, b, c, d, x, s, ac) \
-  {(a) += I ((b), (c), (d)) + (x) + (UINT4)(ac); \
+  {(a) += MD5_I ((b), (c), (d)) + (x) + (UINT4)(ac); \
    (a) = ROTATE_LEFT ((a), (s)); \
    (a) += (b); \
   }
@@ -145,7 +145,7 @@ MD5_CTX *mdContext;
 
   /* pad out to 56 mod 64 */
   padLen = (mdi < 56) ? (56 - mdi) : (120 - mdi);
-  MD5Update (mdContext, PADDING, padLen);
+  MD5Update (mdContext, MD5_PADDING, padLen);
 
   /* append length in bits and transform */
   for (i = 0, ii = 0; i < 14; i++, ii += 4)
