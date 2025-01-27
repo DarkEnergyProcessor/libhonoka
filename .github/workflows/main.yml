@@ -3,10 +3,13 @@ on: [push, pull_request]
 
 jobs:
   linux-os:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Configure
       run: cmake -Bbuild -S. --install-prefix $PWD/installdir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_RPATH=\$ORIGIN/../lib
     - name: Build
@@ -18,9 +21,9 @@ jobs:
         a/bin/honoka2 -?
         a/bin/honoka2 -v
     - name: Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: libhonoka-linux
+        name: libhonoka-${{ matrix.runner }}
         path: a/
   windows-os:
     runs-on: windows-latest
@@ -32,7 +35,7 @@ jobs:
         shell: cmd
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Configure
       env:
         PLATFORM: ${{ matrix.platform }}
@@ -48,7 +51,7 @@ jobs:
         installdir\bin\honoka2 -v
         if NOT %ERRORLEVEL% EQU 0 exit /b 1
     - name: Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: libhonoka-windows-${{ matrix.platform }}
         path: installdir/
