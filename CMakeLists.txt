@@ -2,8 +2,8 @@ cmake_minimum_required (VERSION 3.0)
 
 project(honoka)
 
-set(LIBHONOKA_VERSION 20010019)
-set(LIBHONOKA_VERSION_STRING "2.1.1")
+set(LIBHONOKA_VERSION 20010029)
+set(LIBHONOKA_VERSION_STRING "2.1.2")
 
 if(POLICY CMP0077)
 	# option() honor normal variables
@@ -21,7 +21,7 @@ else()
 endif()
 
 option(HONOKAMIKU_V3_NOHDR_CHECK "Disable version 3 strict header checking (decrypt)" OFF)
-option(HONOKAMIKU_BUILD_EXE "Build libhonoka command-line executable" ${HONOKAMIKU_BUILD_EXE_DEFAULT})
+option(HONOKAMIKU_BUILD_EXE "Build honoka2 command-line executable" ${HONOKAMIKU_BUILD_EXE_DEFAULT})
 option(HONOKAMIKU_BUILD_EXE_STANDALONE "Build executable statically (no *.so/*.dll)" OFF)
 option(HONOKAMIKU_INSTALL "Install executable, library, and header files" ${HONOKAMIKU_INSTALL_DEFAULT})
 
@@ -37,10 +37,8 @@ target_include_directories(honoka_static PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 if(MSVC)
 	# excuse me wtf
-	target_compile_definitions(honoka PRIVATE _CRT_SECURE_NO_WARNINGS)
-	target_compile_definitions(honoka PRIVATE _CRT_SECURE_NO_DEPRECATE)
-	target_compile_definitions(honoka_static PRIVATE _CRT_SECURE_NO_WARNINGS)
-	target_compile_definitions(honoka_static PRIVATE _CRT_SECURE_NO_DEPRECATE)
+	target_compile_definitions(honoka PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+	target_compile_definitions(honoka_static PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
 
 if(HONOKAMIKU_INSTALL)
@@ -60,8 +58,7 @@ if(HONOKAMIKU_BUILD_EXE)
 
 	if(MSVC)
 		# another excuse me wtf
-		target_compile_definitions(honoka2 PRIVATE _CRT_SECURE_NO_WARNINGS)
-		target_compile_definitions(honoka2 PRIVATE _CRT_SECURE_NO_DEPRECATE)
+		target_compile_definitions(honoka2 PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 	endif()
 
 	if(HONOKAMIKU_INSTALL)

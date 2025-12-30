@@ -167,8 +167,8 @@ int main(int argc, char *argv[])
 	
 	/* Set stdout to binary mode for Windows*/
 #ifdef _WIN32
-	_setmode(0, O_BINARY);
-	_setmode(1, O_BINARY); /* stdout = 1 */
+	_setmode(0, _O_BINARY);
+	_setmode(1, _O_BINARY); /* stdout = 1 */
 #endif
 	
 	/* Check argc */
@@ -503,7 +503,7 @@ int main(int argc, char *argv[])
 				return (-1);
 			}
 
-			if(honokamiku_decrypt_final_init(dctx, expected_id, select_ktbl, def_name_sum, file_input, file_header) != HONOKAMIKU_ERR_OK)
+			if(honokamiku_decrypt_final_init(dctx, expected_id, select_ktbl, def_name_sum, basename, file_header) != HONOKAMIKU_ERR_OK)
 			{
 				/* Unknown */
 				fprintf(stderr, "%s: Unknown V3+ decryption method\n", file_input);
